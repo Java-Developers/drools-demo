@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kmodule xmlns="http://jboss.org/kie/6.0.0/kmodule">
+
+    <kbase name="common" packages="com.kevin.drools.demo.common" />
+
+    <kbase name="firmAlarm" includes="common" packages="com.kevin.drools.demo.basic.stateful">
+        <ksession name="firmAlarmKS" type="stateful"/>
+    </kbase>
+
+    <kbase name="cashFlow" includes="common" packages="com.kevin.drools.demo.agenda">
+        <ksession name="cashFlowKS" type="stateful"/>
+    </kbase>
+
+</kmodule>

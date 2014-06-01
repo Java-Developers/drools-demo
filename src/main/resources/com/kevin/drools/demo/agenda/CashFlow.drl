@@ -1,0 +1,43 @@
+package com.kevin.drools.demo.agenda;
+dialect "mvel"
+
+
+rule "Increase balance for credits"
+    agenda-group "calculation"
+when
+  $ap : AccountPeriod()
+  $acc : Account($accountNo : accountNo)
+  $cf : CashFlow(type == CashFlowType.CREDIT,
+            accountNo == $accountNo,
+            date >= $ap.start && <= $ap.end,
+            $amount : amount)
+then
+  log.info("Input facts: {" + $ap + ', ' + $acc + ', ' + $cf + '}');
+  $acc.balance += $amount;
+  log.info("Output facts: {" + $ap + ', ' + $acc + ', ' + $cf + '}');
+end;
+
+rule "Decrease balance for debits"
+    agenda-group "calculation"
+when
+  $ap : AccountPeriod()
+  $acc : Account($accountNo : accountNo)
+  $cf : CashFlow(type == CashFlowType.DEBIT,
+            accountNo == $accountNo,
+            date >= $ap.start && <= $ap.end,
+            $amount : amount)
+then
+  log.info("Input facts: {" + $ap + ', ' + $acc + ', ' + $cf + '}');
+  $acc.balance = $acc.balance - $amount;
+  log.info("Output facts: {" + $ap + ', ' + $acc + ', ' + $cf + '}');
+end;
+
+rule "Print balance for AccountPeriod"
+    agenda-group "report"
+    //salience -10
+when
+  $ap : AccountPeriod()
+  $acc : Account()
+then
+  log.info("Balance: [AccountNo = " + $acc.accountNo + ", Balance = " + $acc.balance + ']');
+end

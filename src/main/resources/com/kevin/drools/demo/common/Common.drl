@@ -1,0 +1,3 @@
+package com.kevin.drools.demo.common
+
+global org.slf4j.Logger log;
